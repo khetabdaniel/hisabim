@@ -1,0 +1,927 @@
+<html><head><base href=".">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hisabim</title>
+<style>
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    margin-top: 60px; /* Adjust this value as needed */
+}
+
+/* Navigation Bar */
+.nav {
+    background: #2563eb;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Add hamburger menu icon styles */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.nav-toggle span {
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Login Page */
+.login-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+}
+
+.login-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Home Page */
+.container {
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 1rem;
+}
+
+.header {
+    background: white;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.client-form {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+.clients-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.clients-table th, .clients-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 2rem;
+    border-radius: 12px;
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Transaction Modal */
+.transaction-columns {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.transaction-column {
+    flex: 1;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.transaction-column h3 {
+    margin-bottom: 1rem;
+    color: #1e3a8a;
+}
+
+/* Balance Styles */
+.positive-balance {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.negative-balance {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+/* History Popup Design */
+#historyContent {
+    padding: 1rem;
+}
+
+#historyContent h3 {
+    color: #2563eb;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+}
+
+.balance-summary {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid #2563eb;
+}
+
+.transaction-item {
+    background: white;
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #e5e7eb;
+    transition: transform 0.2s;
+}
+
+.transaction-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.transaction-date {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.transaction-amount {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.running-balance {
+    color: #6b7280;
+    font-size: 0.9rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-menu {
+        display: none;
+        width: 100%;
+    }
+
+    .nav-menu.active {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-link {
+        width: 100%;
+        padding: 0.8rem 0;
+        font-size: 1rem;
+    }
+
+    .language-selector {
+        width: 100%;
+        justify-content: flex-start;
+        margin: 0.5rem 0;
+    }
+
+    .btn-lang {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .nav-container {
+        padding-top: 0;
+        flex-direction: column;
+    }
+
+    .nav-brand {
+        margin-bottom: 1rem;
+    }
+
+    .nav-toggle {
+        top: 1.2rem;
+        right: 1rem;
+    }
+
+    .nav-menu.active {
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .container {
+        margin-top: 1rem;
+    }
+    
+    .clients-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .clients-table td {
+        padding: 0.8rem;
+    }
+
+    .clients-table td .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    .clients-table td .btn:first-child {
+        margin-top: 0;
+    }
+
+    .clients-table td .btn:last-child {
+        margin-bottom: 0;
+    }
+
+    .btn-delete {
+        margin-left: 0 !important;
+    }
+
+    .nav-menu {
+        gap: 0.5rem;
+    }
+
+    .nav-link {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .transaction-columns {
+        flex-direction: column;
+    }
+}
+
+/* Add to existing CSS */
+.clients-table td a:hover {
+    text-decoration: underline !important;
+}
+
+.btn-delete {
+    background: #ef4444;
+    color: white;
+    margin-left: 0.5rem;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+}
+
+/* Add to existing CSS */
+.language-selector {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.btn-lang {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-lang:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Add support for Arabic text direction */
+[lang="ar"] {
+    direction: rtl;
+    text-align: right;
+}
+</style>
+</head>
+<body>
+<!-- Login Page -->
+<div id="loginPage" class="login-container">
+    <div class="login-box">
+        <h2 style="margin-bottom: 1.5rem;">Login</h2>
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Password" required>
+        </div>
+        <button class="btn btn-primary" onclick="login()">Login</button>
+    </div>
+</div>
+
+<!-- Home Page -->
+<div id="homePage" style="display: none;">
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">hisabim</a>
+            <div class="nav-toggle" onclick="toggleNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link" onclick="showClients()">Clients</a>
+                <a href="#" class="nav-link" onclick="showAddClient()">Add Client</a>
+                <a href="#" class="nav-link" onclick="logout()">Logout</a>
+                <div class="language-selector">
+                    <button onclick="setLanguage('en')" class="btn-lang">EN</button>
+                    <button onclick="setLanguage('tr')" class="btn-lang">TR</button>
+                    <button onclick="setLanguage('ar')" class="btn-lang">&#x639;&#x631;&#x628;&#x64a;</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Add Client Form -->
+        <div id="addClientSection" class="client-form" style="display: none;">
+            <h2>Add New Client</h2>
+            <div class="input-group">
+                <input type="text" id="clientName" placeholder="Client Name" required>
+            </div>
+            <div class="input-group">
+                <input type="tel" id="clientPhone" placeholder="Phone Number" required>
+            </div>
+            <div class="input-group">
+                <textarea id="clientNote" placeholder="Notes"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="addClient()">Add Client</button>
+        </div>
+
+        <!-- Search and Client List -->
+        <div id="clientsSection" style="display: block;">
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search by name or phone number...">
+            
+            <table class="clients-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Notes</th>
+                        <th>Balance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="clientsList">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- History Modal -->
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&#xd7;</span>
+        <div id="historyContent"></div>
+    </div>
+</div>
+
+<!-- Info Modal -->
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeInfoModal()">&#xd7;</span>
+        <h2>Client Information</h2>
+        <div id="infoContent"></div>
+    </div>
+</div>
+
+<!-- Transaction Modal -->
+<div id="transactionModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTransactionModal()">&#xd7;</span>
+        <h2>Add Transaction</h2>
+        <div class="transaction-columns">
+            <div class="transaction-column">
+                <h3>Payment</h3>
+                <div class="input-group">
+                    <input type="number" id="paymentAmount" placeholder="Enter payment amount">
+                    <button class="btn btn-primary" onclick="submitPayment()">Add Payment</button>
+                </div>
+            </div>
+            <div class="transaction-column">
+                <h3>Debt</h3>
+                <div class="input-group">
+                    <input type="number" id="debtAmount" placeholder="Enter debt amount">
+                    <button class="btn btn-primary" onclick="submitDebt()">Add Debt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>const translations = {
+  en: {
+    login: "Login",
+    username: "Username",
+    password: "Password",
+    clientManagement: "Client Management",
+    clients: "Clients",
+    addClient: "Add Client",
+    logout: "Logout",
+    addNewClient: "Add New Client",
+    clientName: "Client Name",
+    phoneNumber: "Phone Number",
+    notes: "Notes",
+    add: "Add",
+    search: "Search by name or phone number...",
+    name: "Name",
+    phone: "Phone",
+    balance: "Balance",
+    actions: "Actions",
+    addTransaction: "Add Transaction",
+    history: "History",
+    delete: "Delete",
+    payment: "Payment",
+    debt: "Debt",
+    clientInformation: "Client Information",
+    paymentHistory: "Payment History",
+    currentBalance: "Current Balance",
+    noTransactions: "No transactions found.",
+    confirmDelete: "Are you sure you want to delete this client? This action cannot be undone."
+  },
+  tr: {
+    login: "Giriş",
+    username: "Kullanıcı Adı",
+    password: "Şifre",
+    clientManagement: "Müşteri Yönetimi",
+    clients: "Müşteriler",
+    addClient: "Müşteri Ekle",
+    logout: "Çıkış",
+    addNewClient: "Yeni Müşteri Ekle",
+    clientName: "Müşteri Adı",
+    phoneNumber: "Telefon Numarası",
+    notes: "Notlar",
+    add: "Ekle",
+    search: "İsim veya telefon numarası ile ara...",
+    name: "İsim",
+    phone: "Telefon",
+    balance: "Bakiye",
+    actions: "İşlemler",
+    addTransaction: "İşlem Ekle",
+    history: "Geçmiş",
+    delete: "Sil",
+    payment: "Ödeme",
+    debt: "Borç",
+    clientInformation: "Müşteri Bilgileri",
+    paymentHistory: "Ödeme Geçmişi",
+    currentBalance: "Mevcut Bakiye",
+    noTransactions: "İşlem bulunamadı.",
+    confirmDelete: "Bu müşteriyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+  },
+  ar: {
+    login: "تسجيل الدخول",
+    username: "اسم المستخدم",
+    password: "كلمة المرور",
+    clientManagement: "إدارة العملاء",
+    clients: "العملاء",
+    addClient: "إضافة عميل",
+    logout: "تسجيل خروج",
+    addNewClient: "إضافة عميل جديد",
+    clientName: "اسم العميل",
+    phoneNumber: "رقم الهاتف",
+    notes: "ملاحظات",
+    add: "إضافة",
+    search: "البحث بالاسم أو رقم الهاتف...",
+    name: "الاسم",
+    phone: "الهاتف",
+    balance: "الرصيد",
+    actions: "العمليات",
+    addTransaction: "إضافة معاملة",
+    history: "السجل",
+    delete: "حذف",
+    payment: "دفع",
+    debt: "دين",
+    clientInformation: "معلومات العميل",
+    paymentHistory: "سجل المدفوعات",
+    currentBalance: "الرصيد الحالي",
+    noTransactions: "لا توجد معاملات.",
+    confirmDelete: "هل أنت متأكد من حذف هذا العميل؟ لا يمكن التراجع عن هذا الإجراء."
+  }
+};
+let currentLanguage = 'en';
+function setLanguage(lang) {
+  currentLanguage = lang;
+  updateUIText();
+}
+function getText(key) {
+  return translations[currentLanguage][key];
+}
+function updateUIText() {
+  document.querySelector('.login-box h2').textContent = getText('login');
+  document.getElementById('username').placeholder = getText('username');
+  document.getElementById('password').placeholder = getText('password');
+  document.querySelector('.login-box .btn').textContent = getText('login');
+  document.querySelector('.nav-brand').textContent = getText('clientManagement');
+  document.querySelectorAll('.nav-link')[0].textContent = getText('clients');
+  document.querySelectorAll('.nav-link')[1].textContent = getText('addClient');
+  document.querySelectorAll('.nav-link')[2].textContent = getText('logout');
+  document.getElementById('searchInput').placeholder = getText('search');
+  const tableHeaders = document.querySelector('.clients-table thead tr').children;
+  tableHeaders[0].textContent = getText('name');
+  tableHeaders[1].textContent = getText('phone');
+  tableHeaders[2].textContent = getText('notes');
+  tableHeaders[3].textContent = getText('balance');
+  tableHeaders[4].textContent = getText('actions');
+  displayClients();
+}
+let clients = [];
+let transactions = {};
+let currentClientId = null;
+function calculateBalance(clientId) {
+  if (!transactions[clientId]) return 0;
+  return transactions[clientId].reduce((sum, transaction) => {
+    return sum + transaction.amount;
+  }, 0);
+}
+function showClients() {
+  document.getElementById('addClientSection').style.display = 'none';
+  document.getElementById('clientsSection').style.display = 'block';
+}
+function showAddClient() {
+  document.getElementById('addClientSection').style.display = 'block';
+  document.getElementById('clientsSection').style.display = 'none';
+}
+function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  if (username === 'admin' && password === '1234') {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('homePage').style.display = 'block';
+    loadClients();
+    showClients();
+  } else {
+    alert('Invalid credentials!');
+  }
+}
+function logout() {
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+}
+function addClient() {
+  const name = document.getElementById('clientName').value;
+  const phone = document.getElementById('clientPhone').value;
+  const note = document.getElementById('clientNote').value;
+  if (!name || !phone) {
+    alert('Name and phone are required!');
+    return;
+  }
+  const client = {
+    id: Date.now(),
+    name,
+    phone,
+    note
+  };
+  clients.push(client);
+  transactions[client.id] = [];
+  saveData();
+  loadClients();
+  document.getElementById('clientName').value = '';
+  document.getElementById('clientPhone').value = '';
+  document.getElementById('clientNote').value = '';
+  showClients();
+}
+function saveData() {
+  localStorage.setItem('clients', JSON.stringify(clients));
+  localStorage.setItem('transactions', JSON.stringify(transactions));
+}
+function loadClients() {
+  const storedClients = localStorage.getItem('clients');
+  const storedTransactions = localStorage.getItem('transactions');
+  if (storedClients) {
+    clients = JSON.parse(storedClients);
+  }
+  if (storedTransactions) {
+    transactions = JSON.parse(storedTransactions);
+  }
+  displayClients();
+}
+function displayClients() {
+  const clientsList = document.getElementById('clientsList');
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  clientsList.innerHTML = '';
+  clients.filter(client => client.name.toLowerCase().includes(searchTerm) || client.phone.includes(searchTerm)).forEach(client => {
+    const balance = calculateBalance(client.id);
+    const balanceClass = balance >= 0 ? 'positive-balance' : 'negative-balance';
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td><a href="javascript:void(0)" onclick="showInfo(${client.id})" style="text-decoration: none; color: #2563eb; cursor: pointer;">${client.name}</a></td>
+        <td>${client.phone}</td>
+        <td>${client.note}</td>
+        <td class="${balanceClass}">$${balance.toFixed(2)}</td>
+        <td>
+            <button class="btn btn-primary" onclick="addTransaction(${client.id})">${getText('addTransaction')}</button>
+            <button class="btn btn-primary" onclick="showHistory(${client.id})">${getText('history')}</button>
+            <button class="btn btn-delete" onclick="deleteClient(${client.id})">${getText('delete')}</button>
+        </td>
+    `;
+    clientsList.appendChild(row);
+  });
+}
+function addTransaction(clientId) {
+  currentClientId = clientId;
+  const modal = document.getElementById('transactionModal');
+  modal.style.display = 'block';
+  document.getElementById('paymentAmount').value = '';
+  document.getElementById('debtAmount').value = '';
+}
+function submitPayment() {
+  const amount = document.getElementById('paymentAmount').value;
+  if (!amount) return;
+  const transaction = {
+    date: new Date().toISOString(),
+    amount: Math.abs(parseFloat(amount))
+  };
+  if (!transactions[currentClientId]) {
+    transactions[currentClientId] = [];
+  }
+  transactions[currentClientId].push(transaction);
+  saveData();
+  closeTransactionModal();
+}
+function submitDebt() {
+  const amount = document.getElementById('debtAmount').value;
+  if (!amount) return;
+  const transaction = {
+    date: new Date().toISOString(),
+    amount: -Math.abs(parseFloat(amount))
+  };
+  if (!transactions[currentClientId]) {
+    transactions[currentClientId] = [];
+  }
+  transactions[currentClientId].push(transaction);
+  saveData();
+  closeTransactionModal();
+}
+function closeTransactionModal() {
+  document.getElementById('transactionModal').style.display = 'none';
+  currentClientId = null;
+}
+function showHistory(clientId) {
+  const modal = document.getElementById('historyModal');
+  const content = document.getElementById('historyContent');
+  const client = clients.find(c => c.id === clientId);
+  const currentBalance = calculateBalance(clientId);
+  
+  content.innerHTML = `
+      <h3>${client.name}'s Transaction History</h3>
+      <div class="balance-summary">
+          <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Current Balance</div>
+          <div style="font-size: 1.5rem;" class="${currentBalance >= 0 ? 'positive-balance' : 'negative-balance'}">
+              $${currentBalance.toFixed(2)}
+          </div>
+      </div>
+  `;
+
+  if (transactions[clientId] && transactions[clientId].length > 0) {
+      let runningBalance = 0;
+      const transactionList = transactions[clientId].map(t => {
+          runningBalance += t.amount;
+          const date = new Date(t.date);
+          const formattedDate = date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+          });
+          
+          return `
+              <div class="transaction-item">
+                  <div class="transaction-date">${formattedDate}</div>
+                  <div class="transaction-amount ${t.amount >= 0 ? 'positive-balance' : 'negative-balance'}">
+                      ${t.amount >= 0 ? '+' : ''}$${t.amount.toFixed(2)}
+                  </div>
+                  <div class="running-balance">
+                      Running Balance: 
+                      <span class="${runningBalance >= 0 ? 'positive-balance' : 'negative-balance'}">
+                          $${runningBalance.toFixed(2)}
+                      </span>
+                  </div>
+              </div>
+          `;
+      }).join('');
+      
+      content.innerHTML += `
+          <div style="margin-top: 1.5rem;">
+              ${transactionList}
+          </div>
+      `;
+  } else {
+      content.innerHTML += `
+          <div style="text-align: center; padding: 2rem; color: #6b7280;">
+              No transactions found for this client.
+          </div>
+      `;
+  }
+  
+  modal.style.display = 'block';
+}
+function showInfo(clientId) {
+  const modal = document.getElementById('infoModal');
+  const content = document.getElementById('infoContent');
+  const client = clients.find(c => c.id === clientId);
+  content.innerHTML = `
+      <div style="margin: 15px 0;">
+          <h3>Client Details</h3>
+          <p><strong>Name:</strong> ${client.name}</p>
+          <p><strong>Phone:</strong> ${client.phone}</p>
+          <p><strong>Notes:</strong> ${client.note || 'No notes available'}</p>
+      </div>
+  `;
+  modal.style.display = 'block';
+}
+function closeModal() {
+  document.getElementById('historyModal').style.display = 'none';
+}
+function closeInfoModal() {
+  document.getElementById('infoModal').style.display = 'none';
+}
+function deleteClient(clientId) {
+  if (confirm(getText('confirmDelete'))) {
+    clients = clients.filter(client => client.id !== clientId);
+    delete transactions[clientId];
+    saveData();
+    displayClients();
+  }
+}
+function toggleNav() {
+  const navMenu = document.querySelector('.nav-menu');
+  navMenu.classList.toggle('active');
+  const toggleBtn = document.querySelector('.nav-toggle');
+  const spans = toggleBtn.getElementsByTagName('span');
+  if (navMenu.classList.contains('active')) {
+    spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+    spans[1].style.opacity = '0';
+    spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+  } else {
+    spans[0].style.transform = 'none';
+    spans[1].style.opacity = '1';
+    spans[2].style.transform = 'none';
+  }
+}
+document.getElementById('searchInput').addEventListener('input', displayClients);
+loadClients();
+window.onclick = function (event) {
+  const historyModal = document.getElementById('historyModal');
+  const transactionModal = document.getElementById('transactionModal');
+  const infoModal = document.getElementById('infoModal');
+  if (event.target === historyModal) {
+    historyModal.style.display = 'none';
+  }
+  if (event.target === transactionModal) {
+    transactionModal.style.display = 'none';
+  }
+  if (event.target === infoModal) {
+    infoModal.style.display = 'none';
+  }
+};
+setLanguage('en');</script>
+</body>
+</html>
